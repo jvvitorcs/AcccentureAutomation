@@ -1,3 +1,8 @@
+// ***********************************************************
+// Necessário executar npm install para instalar os módulos
+// Para executar a os testes basta selecionar cy:open na aba NPM SCRIPTS
+// ***********************************************************
+
 describe('Template spec', function() {
     beforeEach(function() {
       cy.viewport(1920, 1080);
@@ -35,4 +40,37 @@ describe('Template spec', function() {
     cy.tick(3000)
     cy.get('.modal-content').should('not.exist')
   })
+
+  it('Browser Windows', function() {    
+    cy.get('.category-cards > :nth-child(3)').click()
+    cy.get(':nth-child(3) > .element-list > .menu-list > #item-0').click()
+    let newWindowUrl;  
+      cy.on('window:open', (win) => {
+        newWindowUrl = win.location.href;
+      });  
+      cy.window().then((win) => {
+        cy.stub(win, 'open').callsFake((url) => {
+          if (!url.startsWith('http')) {
+            url = `${win.location.origin}${url}`;
+          }
+          newWindowUrl = url; 
+          win.location.href = url;
+        });
+      });  
+      cy.get('#windowButton').click();  
+      cy.wrap(null).should(() => {
+        if (!newWindowUrl) {
+          throw new Error('A URL da nova janela não foi capturada');
+      }
+    }).then(() => {
+      cy.visit(newWindowUrl);
+      cy.get('#sampleHeading').should('contain.text', 'This is a sample page');
+    });
+    cy.go('back');
+  });
+
+  afterEach(function () {
+    const testName = this.currentTest.title;
+    cy.screenshot(`screenshot-${testName}`);
+  });
 })
