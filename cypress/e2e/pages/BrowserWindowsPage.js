@@ -34,6 +34,7 @@ class BrowserWindowsPage {
     }
     checkTextOnNewWindow(){
         cy.get('#sampleHeading').should('contain.text', 'This is a sample page')    
+        cy.screenshotTest()
         cy.go('back')
     }    
 }

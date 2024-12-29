@@ -1,25 +1,25 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add('screenshotTest', () => {
+    const testName = Cypress.mocha.getRunner().test.title
+    cy.screenshot(`screenshot-${testName}`)
+})
+
+Cypress.Commands.add('fillPracticeFormFieldsAndSubmit', function(){
+        cy.get('#firstName').should('be.visible').type('Vitor')
+        cy.get('#lastName').type('Silva')
+        cy.get('#userEmail').type('VitorSilva@demo.com', { delay: 0 })
+        cy.get('label[for="gender-radio-1"]').click();
+        cy.get('#userNumber').type('81934563210', {delay: 0})
+        cy.get('.subjects-auto-complete__value-container').type('E')
+        cy.get('#react-select-2-option-0').click()
+        cy.get('.css-12jo7m5').should('contain.text', 'English')
+        cy.get('label[for="hobbies-checkbox-2"]').click();
+        cy.get('label[for="hobbies-checkbox-3"]').click();
+        cy.get('input[type="file"]').should('not.have.value').selectFile('cypress/fixtures/submit.txt')
+        const longtext = 'Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test, Test.'
+        cy.get('#currentAddress').type(longtext , { delay: 0 })
+        cy.get('#state').click()
+        cy.get('#react-select-3-option-1').click()
+        cy.get('#city').click()
+        cy.get('#react-select-4-option-1').click()   
+        cy.get('#submit').click()
+})
