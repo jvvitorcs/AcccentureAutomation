@@ -20,3 +20,9 @@ Feature: I want to test frontend functionalities
         And I delete the new registration
         Then I have to submit twelve new registrations
         And I delete all new registrations
+        
+        @automatedTest @progressBar
+        Scenario: Check Progress Bar Values
+        Given I access the Progress Bar submenu page
+        When I start the progress bar until the progress is 25%
+        Then I restart the progress the progress until 100%

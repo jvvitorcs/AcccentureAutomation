@@ -10,7 +10,7 @@ Cypress.Commands.add('fillPracticeFormFieldsAndSubmit', function(){
         cy.get('label[for="gender-radio-1"]').click();
         cy.get('#userNumber').type('81934563210', {delay: 0})
         cy.get('.subjects-auto-complete__value-container').type('E')
-        cy.get('#react-select-2-option-0').click()
+        cy.get('#react-select-2-option-0').should('be.visible').click()
         cy.get('.css-12jo7m5').should('contain.text', 'English')
         cy.get('label[for="hobbies-checkbox-2"]').click();
         cy.get('label[for="hobbies-checkbox-3"]').click();

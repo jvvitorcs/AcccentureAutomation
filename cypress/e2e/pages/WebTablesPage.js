@@ -10,7 +10,9 @@ class WebTablesPage {
         cy.get(':nth-child(1) > .element-list > .menu-list > #item-3').click()
     }
     RegistrationFormTable() {
+        cy.clock()
         cy.get('#addNewRecordButton').click({ force: true })
+        cy.tick(3000)
         cy.get('#firstName').should('be.visible').type('Vitor')
         cy.get('#lastName').type('Silva')
         cy.get('#userEmail').type('VitorSilva@demo.com')
@@ -31,12 +33,13 @@ class WebTablesPage {
         cy.get('#submit').click()
     }
     DeleteRegistration() {        
-        cy.get('#delete-record-4').should('be.visible').click()
+        cy.get('#delete-record-4').should('be.visible').click({ force: true })
         cy.get('#delete-record-4').should('not.exist')
     }
     RegistrationFormTableDynamically() {
-        for (let i = 1; i <= 12; i++) {            
-            cy.get('#addNewRecordButton').should('be.visible').click()            
+        for (let i = 1; i <= 12; i++) {             
+            cy.wait(500)          
+            cy.get('#addNewRecordButton').should('be.visible').click()                      
             cy.get('#firstName').should('be.visible').type(`User${i}`)
             cy.get('#lastName').type(`LastName${i}`)
             cy.get('#userEmail').type(`user${i}@example.com`, { delay: 0 })
